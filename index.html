@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Weather </title>
+    <style>
+      body{
+        background-color:skyblue;
+        font-family:Arial;
+        padding:25px;
+        text-align:center;
+      }
+      button{
+        background-color:yellow;
+        cursor:pointer;
+      }
+      .Weather{
+        background-color:white;
+        width:300px;
+        margin:50px auto;
+        border-radius:20px;
+      }
+      input,  button {
+        padding:20px;
+        margin:10px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="Weather">
+      <h1>Weather Website</h1>
+      <p>Check the Weather of your City</p>
+      <input type="text" id="city" placeholder="Enter City Name">
+      <br>
+      
+      <button onclick="getWeather()">
+        Search weather
+      </button>
+      <p id="temp"></p>
+
+      </div>
+      <script>
+        async function getWeather() {
+
+            let city = document.getElementById("city").value;
+
+            let url = "https://geocoding-api.open-meteo.com/v1/search?name=" + city;
+
+            let response = await fetch(url);
+            let data = await response.json();
+
+            let lat = data.results[0].latitude;
+            let lon = data.results[0].longitude;
+
+            let url2 = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current=temperature_2m";
+
+            let response2 = await fetch(url2);
+            let data2 = await response2.json();
+
+            document.getElementById("temp").innerHTML =
+            data2.current.temperature_2m + " °C";
+        }
+    </script>
+      
+  </body>
+</html>
